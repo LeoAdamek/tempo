@@ -16,7 +16,7 @@ jobs:
           name: Run unit tests
           command: >
             trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
-            go test -v ./... | tee ${TEST_RESULTS}/go-test.out
+            go test -v 2>&1 | tee ${TEST_RESULTS}/go-test.out
 
       - store_artifacts:
           path: /tmp/artifacts
