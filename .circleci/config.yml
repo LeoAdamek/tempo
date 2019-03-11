@@ -3,7 +3,7 @@ version: 2.1
 workflows:
   test:
     docker:
-      - image: circleci/golang:1.8
+      - image: circleci/golang:1.11
 
     environment: # environment variables for the build itself
       TEST_RESULTS: /tmp/test-results # path to where test results will be saved      - image: circleci/golang:latest
