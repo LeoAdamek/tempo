@@ -1,0 +1,27 @@
+version: 2.1
+
+workflows:
+  test:
+    docker:
+      - image: circleci/golang:1.8
+
+    environment: # environment variables for the build itself
+      TEST_RESULTS: /tmp/test-results # path to where test results will be saved      - image: circleci/golang:latest
+
+    steps:
+      - checkout
+      - run: go get github.com/jstemmer/go-junit-report
+      - run:
+          name: Run unit tests
+          command: >
+            go test -cover -coverprofile=cover.out -v 2>&1  | tee ${TEST_RESULTS}/go-test.out
+            go tool cover html=c.out -o /tmp/artifacts/coverage.html
+            go-junit-report < ${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/c
+
+      - store_artifacts:
+          path: /tmp/artifacts
+      
+      - save_cache:
+          key: v1-pkg-cache
+          paths:
+            - "/go/pkg"
