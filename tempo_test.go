@@ -14,7 +14,7 @@ func TestClient_JSON(t *testing.T) {
 		String: "some string",
 	}
 
-	c, err := New()
+	c, err := New("DEMO_TOKEN")
 
 	if err != nil {
 		t.Error(err)

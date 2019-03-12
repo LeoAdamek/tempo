@@ -30,14 +30,16 @@ type Client struct {
 }
 
 // New creates a new API client instance.
-func New() (*Client, error) {
+func New(token string) (*Client, error) {
 
 	userAgent := fmt.Sprintf("tempo.go (%s %s %s)", runtime.GOOS, runtime.GOARCH, runtime.Version())
 
 	return &Client{
-		userAgent: userAgent,
-		log:       log.New(os.Stdout, "tempo", log.LstdFlags),
-		http:      http.DefaultClient,
+		authToken:      token,
+		tokenExpiresAt: time.Now().AddDate(1000, 0, 0),
+		userAgent:      userAgent,
+		log:            log.New(os.Stdout, "tempo", log.LstdFlags),
+		http:           http.DefaultClient,
 	}, nil
 }
 
@@ -54,7 +56,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request) (*http.Response, err
 	req.Header.Set("Authorization", "Bearer "+token)
 
 	if c.Debug {
-		// req.Write(c.log.Writer())
+		//req.Write(c.log.Writer())
 	}
 
 	res, err := ctxhttp.Do(ctx, c.http, req)
@@ -86,7 +88,7 @@ func (c *Client) JSON(ctx context.Context, method, path string, body, into inter
 
 	bodyReader := bytes.NewReader(buffer.Bytes())
 
-	req, err := http.NewRequest(method, APIHost+path, bodyReader)
+	req, err := http.NewRequest(method, APIHost+"/core/3"+path, bodyReader)
 
 	if err != nil {
 		return err

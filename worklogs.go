@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"math"
+	"net/http"
 	"time"
 )
 
@@ -19,8 +20,7 @@ type Worklog struct {
 
 // CreateWorklog will create the given worklog
 func (c *Client) CreateWorklog(ctx context.Context, worklog *Worklog) error {
-
-	return Error{}
+	return c.JSON(ctx, http.MethodPost, "/worklogs", worklog, &worklog)
 }
 
 // MarshalJSON marshals the Worklog into JSON

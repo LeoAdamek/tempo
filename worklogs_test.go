@@ -1,13 +1,35 @@
 package tempo
 
 import (
+	"context"
 	"encoding/json"
 	"testing"
 	"time"
 )
 
 func TestClient_CreateWorklog(t *testing.T) {
+	c, err := New("DEMO_TOKEN")
 
+	if err != nil {
+		t.Error(err)
+		t.Fail()
+	}
+
+	c.Debug = true
+
+	w := Worklog{
+		Start:        time.Date(2001, 11, 9, 8, 43, 10, 0, time.UTC),
+		TimeSpent:    30 * time.Minute,
+		BillableTime: 314159265 * time.Microsecond,
+		UserID:       "some_random_id",
+		Description:  "Time Description",
+		IssueKey:     "TEST-1234",
+	}
+
+	if err := c.CreateWorklog(context.TODO(), &w); err != nil {
+		t.Error(err)
+		t.Fail()
+	}
 }
 
 func TestWorklog_MarshalJSON(t *testing.T) {
