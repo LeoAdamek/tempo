@@ -27,7 +27,7 @@ func (c *Client) CreateWorklog(ctx context.Context, worklog *Worklog) error {
 func (w Worklog) MarshalJSON() ([]byte, error) {
 	timeSpentSeconds := int64(math.Ceil(w.TimeSpent.Seconds()))
 	// billableTimeSeconds := int64(math.Ceil(w.BillableTime.Seconds()))
-	startDate := w.Start.Format("2006-02-01")
+	startDate := w.Start.Format("2006-01-02")
 	startTime := w.Start.Format("15:04:03")
 
 	return json.Marshal(&struct {
