@@ -56,7 +56,8 @@ func (c *Client) Do(ctx context.Context, req *http.Request) (*http.Response, err
 	req.Header.Set("Authorization", "Bearer "+token)
 
 	if c.Debug {
-		//req.Write(c.log.Writer())
+		req.Write(c.log.Writer())
+		return nil, nil
 	}
 
 	res, err := ctxhttp.Do(ctx, c.http, req)
